@@ -24,6 +24,7 @@ def cont():
     cur41=con4.cursor()
     cur4.execute("select * from user1")
     list4=cur4.fetchall()
+    v2 = 2
     for j in list4:
             if(j[0]==ent6.get()):
                 user=j[0]

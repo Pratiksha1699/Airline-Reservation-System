@@ -3,8 +3,10 @@ import psycopg2
 import tkinter as tk
 import subprocess
 import os
+#from PIL import Image
+#from PIL import ImageGrab
+import pyautogui
 from PIL import Image
-from PIL import ImageGrab
 
 rootR=tk.Tk()
 rootR.geometry('1400x700+0+0')
@@ -13,12 +15,13 @@ img1=tk.PhotoImage(file="img\\flight6.png")
 img2=tk.PhotoImage(file="img\\pass6.png")
 img3=tk.PhotoImage(file="img\\pay2.png")
 img4=tk.PhotoImage(file="img\\reset1.1.png")
+img5=tk.PhotoImage(file="img\\btn10_1.png")
 
 lbg=tk.Label(rootR,image=imgbg).pack()
 lblusr=tk.Label(rootR,text='User:',bg='white',font='Arial 12')
 lblusr.place(x=5,y=20,height=40,width=90)
 txt=tk.Entry(rootR,font='Arial 12')
-txt.place(x=5,y=65,height=40,width=150)
+txt.place(x=5,y=65,height=40,width=120)
 
 def View():
 
@@ -107,7 +110,8 @@ def View():
     str12=str11.replace("'",'')
     print(str11)
     print(str12)
-    C=str12.split(', ')
+    C=str12.split(',')
+    print(C)
 
     row2=cur2.fetchall()
     for i in row2:
@@ -171,20 +175,17 @@ def View():
         p=p+30
 
     q=p
-    if(len(C)==1):
-        print("No c")
-    else:
-        for m in range(len(C)):
-            lblc2=Label(can2,bg='Blue',text=k+1,fg='white',font='Times 14 bold')
-            lblc2.place(x=50,y=q,width=230,height=25)
-            lblc21=Label(can2,bg='Blue',text=C[m-1],fg='white',font='Times 14 bold')
-            lblc21.place(x=285,y=q,width=200,height=25)
-            lblc22=Label(can2,bg='Blue',text="Child",fg='white',font='Times 14 bold')
-            lblc22.place(x=490,y=q,width=200,height=25)
-            lblc23=Label(can2,bg='Blue',text=m+900,fg='white',font='Times 14 bold')
-            lblc23.place(x=695,y=q,width=200,height=25)
-            q=q+30
-            k=k+1
+    for m in range(len(C)):
+        lblc2=Label(can2,bg='Blue',text=k+1,fg='white',font='Times 14 bold')
+        lblc2.place(x=50,y=q,width=230,height=25)
+        lblc21=Label(can2,bg='Blue',text=C[m-1],fg='white',font='Times 14 bold')
+        lblc21.place(x=285,y=q,width=200,height=25)
+        lblc22=Label(can2,bg='Blue',text="Child",fg='white',font='Times 14 bold')
+        lblc22.place(x=490,y=q,width=200,height=25)
+        lblc23=Label(can2,bg='Blue',text=m+900,fg='white',font='Times 14 bold')
+        lblc23.place(x=695,y=q,width=200,height=25)
+        q=q+30
+        k=k+1
 
         
     
@@ -201,19 +202,24 @@ def View():
     lblgst.place(x=370,y=120,width=200,height=25)
     lbltotal=Label(can3,bg='floral white',text=Total,fg='black',font='Times 14 bold')
     lbltotal.place(x=370,y=145,width=200,height=25)
+def ConvertToPdf():
+    
+    myScreenshot = pyautogui.screenshot()
+    screenshotPath = r'C:\ss.png'
+    myScreenshot.save(screenshotPath)
+
+    image1 = Image.open(screenshotPath)
+    im1 = image1.convert('RGB')
+    pdfPath = r'C:\Flight_Receipt.pdf'
+    im1.save(pdfPath)
+    os.remove('C:\ss.png')
 
 btn=tk.Button(rootR,text='View',font='Arial 12',command=View,image=img4,compound='center',bg='white',bd=0,fg='white',relief='solid')
 btn.place(x=5,y=105,height=40,width=90)
 
-#canvas.create_window(500,680,window=can3,width=950,height=200)
-'''
-canvas.postscript(file="file_name1"+".eps")
-img=Image.open("file_name1"+'.eps')
-img.save("file_name1"+'.png','png')
-'''
-#process=subprocess.Popen(["ps2pdf","file_name1","result.pdf"],shell=True)
-#process.wait()
-#os.remove("file_name1.ps")
+btn1=tk.Button(rootR,text='Download Receipt',font='Arial 12',command=ConvertToPdf,image=img5,compound='center',bg='white',bd=0,fg='white',relief='solid')
+btn1.place(x=5,y=205,height=60,width=180)
+
 
 rootR.overrideredirect(True)
 rootR.mainloop()
