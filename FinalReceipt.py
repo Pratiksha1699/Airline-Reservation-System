@@ -1,7 +1,6 @@
 from tkinter import *
 import psycopg2
 import tkinter as tk
-import subprocess
 import os
 #from PIL import Image
 #from PIL import ImageGrab
@@ -16,6 +15,7 @@ img2=tk.PhotoImage(file="img\\pass6.png")
 img3=tk.PhotoImage(file="img\\pay2.png")
 img4=tk.PhotoImage(file="img\\reset1.1.png")
 img5=tk.PhotoImage(file="img\\btn10_1.png")
+close5=tk.PhotoImage(file="img\\close7.png")
 
 lbg=tk.Label(rootR,image=imgbg).pack()
 lblusr=tk.Label(rootR,text='User:',bg='white',font='Arial 12')
@@ -77,7 +77,7 @@ def View():
     cur3.execute("select * from FlightDetails")
     row1=cur1.fetchall()
     for i in row1:
-        if(i[0]==txt.get()):
+        if((i[0]).lower()==txt.get().lower()):
             fname=i[1]
             Alist=i[2]
             Clist=i[3]
@@ -115,7 +115,7 @@ def View():
 
     row2=cur2.fetchall()
     for i in row2:
-        if(i[0]==txt.get()):
+        if((i[0]).lower()==txt.get().lower()):
             source=i[1]
             dest=i[2]
             adult=i[5]
@@ -127,7 +127,7 @@ def View():
     charges=0
     row3=cur3.fetchall()
     for i in row3:
-        if(i[0]==fname and i[1]==source and i[2]==dest and i[5]==class1):
+        if((i[0]).lower()==fname.lower() and i[1]==source and i[2]==dest and i[5]==class1):
             charges=i[6]
             break;
     print(charges)
@@ -219,6 +219,9 @@ btn.place(x=5,y=105,height=40,width=90)
 
 btn1=tk.Button(rootR,text='Download Receipt',font='Arial 12',command=ConvertToPdf,image=img5,compound='center',bg='white',bd=0,fg='white',relief='solid')
 btn1.place(x=5,y=205,height=60,width=180)
+
+close=tk.Button(rootR,image=close5,bg='white',bd=0,highlightthickness=0,activebackground='SkyBlue',command=rootR.destroy)
+close.place(x=1320,y=10,width=30,height=30)
 
 
 rootR.overrideredirect(True)
